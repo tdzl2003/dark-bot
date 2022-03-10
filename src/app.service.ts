@@ -171,10 +171,12 @@ export class Bot {
     }
 
     // 选择刷怪地图
-    if (this.config.mapName) {
-      this.mapName = this.config.mapName;
-    } else {
-      this.mapName = this.findBestMap();
+    if (!this.mapName) {
+      if (this.config.mapName) {
+        this.mapName = this.config.mapName;
+      } else {
+        this.mapName = this.findBestMap();
+      }
     }
 
     // 边打边前往刷怪地图
@@ -700,6 +702,11 @@ export class Bot {
             );
           }
           const rec = monsterMap.get(v.name);
+          if (rec.hp !== v.hp || rec.lv !== v.lv || rec.type !== v.type) {
+            console.log(
+              `错误的怪物信息：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
+            );
+          }
           if (rec.maps.indexOf(this.pos.name) < 0) {
             console.log(`未知怪物出现地图：${v.name} ${this.pos.name}`);
           }
