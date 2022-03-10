@@ -424,6 +424,11 @@ export class Bot {
     }
     this.log(`在店铺${shop.name}补给`);
 
+    let gold = this.player.gold;
+    const prices = {};
+    for (const item of shop.goods) {
+      prices[item.goodsId] = Number(item.sellGold);
+    }
     const buyItems = [];
     if (this.player.lv >= 10 && !map['62258de568314c57c17abef8']) {
       // 10级以上买回城石
@@ -431,6 +436,7 @@ export class Bot {
         goodsId: '62258de568314c57c17abef8',
         count: 1,
       });
+      gold -= prices['62258de568314c57c17abef8'];
     }
 
     // 剩下的尽可能买到平均
@@ -440,14 +446,9 @@ export class Bot {
       .filter((v) => goodsMap.get(v).shouldBuy?.(this));
     // 按当前数量从少到多排序
     keys.sort((a, b) => (map[a]?.count || 0) - (map[b]?.count || 0));
-    const prices = {};
-    for (const item of shop.goods) {
-      prices[item.goodsId] = Number(item.sellGold);
-    }
 
     let unitPrice = 0;
     let buyToCount = 0;
-    let gold = this.player.gold;
     for (const key of keys) {
       const myCount = map[key]?.count || 0;
       let buyCount = myCount - buyToCount;
@@ -595,9 +596,11 @@ export class Bot {
       dy = target.y - this.pos.y;
     let { x, y } = this.pos;
     if (Math.abs(dx) > Math.abs(dy)) {
-      x += Math.sign(dx);
+      const dis = Math.min(this.player.speed, Math.abs(dx));
+      x += Math.sign(dx) * dis;
     } else {
-      y += Math.sign(dy);
+      const dis = Math.min(this.player.speed, Math.abs(dy));
+      y += Math.sign(dy) * dis;
     }
 
     // this.log(`移动到：${x},${y}（目标：${target.x},${target.y}）`);

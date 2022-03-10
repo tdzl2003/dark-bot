@@ -153,8 +153,8 @@ export const monsters: MonsterData[] = [
     lv: 10,
     type: 'm3',
     maps: ['初始大陆'],
-    dropGoods: ['中血瓶'],
-    dropEquips: ['妖狐之眼'],
+    dropGoods: ['中血瓶', '中蓝瓶'],
+    dropEquips: ['妖狐之眼', '狐皮靴'],
     minLv: 10,
     maxLv: 999,
   },
@@ -197,7 +197,7 @@ export const monsters: MonsterData[] = [
     lv: 10,
     type: 'm1',
     maps: ['东部矿坑'],
-    dropGoods: ['中蓝瓶'],
+    dropGoods: ['中血瓶', '中蓝瓶'],
     dropEquips: ['皮手套'],
     minLv: 10,
     maxLv: 15,
@@ -221,8 +221,8 @@ export const monsters: MonsterData[] = [
     maps: ['东部矿坑'],
     minLv: 10,
     maxLv: 20,
-    dropGoods: ['小蓝瓶', '中蓝瓶'],
-    dropEquips: ['玛瑙法杖'],
+    dropGoods: ['小蓝瓶', '中血瓶', '中蓝瓶'],
+    dropEquips: ['玛瑙法杖', '法师长袍'],
   },
 
   {
@@ -233,7 +233,7 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 11,
     maxLv: 16,
-    dropGoods: ['中蓝瓶'],
+    dropGoods: ['中血瓶', '中蓝瓶'],
     dropEquips: ['法师之拳'],
   },
   {
@@ -244,6 +244,7 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 12,
     maxLv: 17,
+    dropEquips: ['铁意头盔'],
   },
   {
     name: '幽魂',
@@ -253,6 +254,7 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 13,
     maxLv: 18,
+    dropEquips: ['铁意头盔'],
   },
   {
     name: '大岩蛇',
@@ -566,6 +568,7 @@ export const maps = [
   { name: '东部矿坑', minLvl: 10, maxLvl: 10 },
   { name: '矿坑东', minLvl: 11, maxLvl: 20 },
   { name: '矿坑北', minLvl: 15, maxLvl: 99 },
+  { name: '神秘通道', minLvl: 15, maxLvl: 99 },
   { name: '血色森林', minLvl: 15, maxLvl: 99 },
   { name: '封魔谷', minLvl: 15, maxLvl: 99 },
 ];
