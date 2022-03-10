@@ -97,12 +97,33 @@ export interface SkillInfo {
 }
 
 export interface BotConfig {
-  script: 'idle' | 'scriptHome' | 'scriptBattle' | 'scriptExp';
+  /**
+   * 选择任务。IDLE: 什么也不做。scriptHome：回城。scriptBattle：自动战斗升级
+   */
+  script: 'idle' | 'scriptHome' | 'scriptBattle';
+  /**
+   * 使用的技能ID
+   */
   skillId: string;
+  /**
+   * 可选：指定地图。不然按等级自动选择地图
+   */
   mapName?: string;
+  /**
+   * 智能买药最大上限，推荐设置成2000
+   */
   maxBuyCount?: number;
+  /**
+   * 装备策略，物理或魔法
+   */
   preferAttr: 'melee' | 'magic';
+  /**
+   * 是否显示战斗过程和常规信息
+   */
   log?: boolean;
+  /**
+   * 是否显示详细AI决策过程
+   */
   debug?: boolean;
 }
 

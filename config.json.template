@@ -4,6 +4,9 @@
     "password": "password",
     "token": "无需填写，自动生成，也可从浏览器复制可以实时刷新状态（但不要同时开启双端挂机）",
     "config": {
+      "debug": false,
+      "log": true,
+      "mapName": undefined,
       "maxBuyCount": 2000,
       "script": "scriptBattle",
       "skillId": "621ba739e0f78648a8c27d70",
