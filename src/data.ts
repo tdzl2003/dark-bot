@@ -164,7 +164,7 @@ export const monsters: MonsterData[] = [
     hp: 1,
     lv: 1,
     type: 'herb',
-    maps: ['东部矿坑', '矿坑东'],
+    maps: ['东部矿坑', '矿坑东', '矿坑北'],
     dropGoods: ['铝矿'],
     minLv: 1,
     maxLv: 999,
@@ -174,7 +174,7 @@ export const monsters: MonsterData[] = [
     hp: 1,
     lv: 1,
     type: 'herb',
-    maps: ['东部矿坑', '矿坑东'],
+    maps: ['东部矿坑', '矿坑东', '矿坑北'],
     dropGoods: ['铁矿'],
     minLv: 1,
     maxLv: 999,
@@ -218,7 +218,7 @@ export const monsters: MonsterData[] = [
     hp: 660,
     lv: 14,
     type: 'm2',
-    maps: ['东部矿坑'],
+    maps: ['东部矿坑', '矿坑北'],
     minLv: 14,
     maxLv: 24,
     dropGoods: ['小蓝瓶', '中血瓶', '中蓝瓶'],
@@ -250,7 +250,7 @@ export const monsters: MonsterData[] = [
     name: '幽魂',
     hp: 560,
     lv: 13,
-    type: 'm1',
+    type: 'm2',
     maps: ['矿坑东'],
     minLv: 13,
     maxLv: 18,
@@ -264,6 +264,16 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 16,
     maxLv: 26,
+  },
+
+  {
+    name: '铁链僵尸',
+    hp: 500,
+    lv: 15,
+    type: 'm1',
+    maps: ['矿坑北'],
+    minLv: 15,
+    maxLv: 20,
   },
 
   {
@@ -343,7 +353,6 @@ export const goods: GoodData[] = [
   {
     id: '6224e4219962680c308d3277',
     name: '火球术',
-    usable: () => true,
   },
 ];
 
@@ -468,6 +477,14 @@ export const io: IoData[] = [
     y: 20,
     toMap: '神秘通道',
   },
+
+  {
+    name: '东部矿坑',
+    map: '矿坑北',
+    x: 40,
+    y: 10,
+    toMap: '东部矿坑',
+  },
 ];
 export const ioMap = arrayToMap(io, (v) => [v.map, v.x, v.y, v.name].join('-'));
 export const ioRevEdgeMap = new Map<string, IoData[]>();
@@ -567,8 +584,9 @@ export const maps = [
   { name: '初始大陆', minLvl: 1, maxLvl: 9 },
   { name: '东部矿坑', minLvl: 10, maxLvl: 10 },
   { name: '矿坑东', minLvl: 11, maxLvl: 20 },
-  { name: '矿坑北', minLvl: 13, maxLvl: 99 },
-  { name: '神秘通道', minLvl: 13, maxLvl: 99 },
-  { name: '血色森林', minLvl: 13, maxLvl: 99 },
-  { name: '封魔谷', minLvl: 13, maxLvl: 99 },
+
+  { name: '矿坑北', minLvl: 1, maxLvl: 99 },
+  { name: '神秘通道', minLvl: 1, maxLvl: 99 },
+  { name: '血色森林', minLvl: 1, maxLvl: 99 },
+  { name: '封魔谷', minLvl: 1, maxLvl: 99 },
 ];

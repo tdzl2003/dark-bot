@@ -43,7 +43,7 @@ export class Bot {
   lastKilled?: string;
 
   mapName: string;
-  lastBuyAt: number = Date.now();
+  lastBuyAt = Date.now() + 600000;
 
   constructor(
     private readonly service: AppService,
@@ -158,8 +158,9 @@ export class Bot {
 
     // 回城补给
     if (this.needBuy()) {
+      this.debug('needBuy');
       this.mapName = null;
-      this.lastBuyAt = Date.now();
+      this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
       return await this.thinkBuy();
     }
 
@@ -283,6 +284,13 @@ export class Bot {
         }
       }
     }
+    if (
+      data &&
+      data.normalNews &&
+      data.normalNews.substr(0, 4) === '你已阵亡'
+    ) {
+      this.lastBuyAt = 0;
+    }
     // this.log(
     //   `血量：${this.player.hp_c}/${this.player.hp}，金钱：${this.player.gold}，经验：${this.player.exp}/${this.player.lvUpExp}`,
     // );
@@ -306,7 +314,7 @@ export class Bot {
       return false;
     }
     // 每小时必然购买一次。
-    if (this.lastBuyAt < Date.now() - 3600000) {
+    if (this.lastBuyAt < Date.now()) {
       return true;
     }
     const map: { [key: string]: GoodInfo } = {};
