@@ -314,7 +314,7 @@ export class Bot {
 
   needBuy() {
     // 有战斗目标时不回城。
-    if (this.lastTarget || this.player.gold < 100) {
+    if (this.lastTarget || this.player.gold < 1000) {
       return false;
     }
     // 每小时必然购买一次。
