@@ -705,9 +705,10 @@ export const PreferAttrConfigs1 = {
     (v: EquipInfo) => v.strCritsDamageRate || 0,
     (v: EquipInfo) =>
       (v.speed || 0) + (v.attackSpeed || 0) + (v.moveSpeed || 0),
-    (v: EquipInfo) => (v.hp || 0) + (v.mp || 0),
+    (v: EquipInfo) => v.hp || 0,
     (v: EquipInfo) => v.attackDistance || 0,
     (v: EquipInfo) => v.vision || 0,
+    (v: EquipInfo) => v.mp || 0,
     (v: EquipInfo) => v.lv || 0,
     (v: EquipInfo) => v.quality || 0,
   ],
@@ -719,9 +720,10 @@ export const PreferAttrConfigs1 = {
     (v: EquipInfo) => v.strCritsDamageRate || 0,
     (v: EquipInfo) =>
       (v.speed || 0) + (v.attackSpeed || 0) + (v.moveSpeed || 0),
-    (v: EquipInfo) => (v.hp || 0) + (v.mp || 0),
+    (v: EquipInfo) => v.hp || 0,
     (v: EquipInfo) => v.attackDistance || 0,
     (v: EquipInfo) => v.vision || 0,
+    (v: EquipInfo) => v.mp || 0,
     (v: EquipInfo) => v.lv || 0,
     (v: EquipInfo) => v.quality || 0,
   ],
