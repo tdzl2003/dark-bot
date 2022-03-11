@@ -45,6 +45,7 @@ export interface MonsterData {
 
   minLv: number;
   maxLv: number;
+  notInPath?: boolean; // 是否战斗寻路中一定不打（防止沙包导致移动失败）
 }
 
 function arrayToMap<T, K>(a: T[], key: (v: T) => K) {
@@ -56,6 +57,16 @@ function arrayToMap<T, K>(a: T[], key: (v: T) => K) {
 }
 
 export const monsters: MonsterData[] = [
+  {
+    name: '沙包',
+    hp: 999999,
+    lv: 999,
+    type: 'm4',
+    maps: ['练功房①', '练功房②'],
+    minLv: 1,
+    maxLv: 999,
+    notInPath: true,
+  },
   {
     name: '黑漆漆的树',
     hp: 1,
@@ -581,6 +592,13 @@ export const io: IoData[] = [
     y: 0,
     toMap: '初始大陆',
   },
+  {
+    name: '初始大陆',
+    map: '练功房②',
+    x: 0,
+    y: 0,
+    toMap: '初始大陆',
+  },
 
   {
     name: '初始大陆',
@@ -707,7 +725,8 @@ export function findNextIo(start: string, end: string): IoData {
 
 export const PreferAttrConfigs1 = {
   melee: [
-    (v: EquipInfo) => (v.maxAtk || 0) + (v.minAtk || 0) + (v.neglectDef || 0),
+    (v: EquipInfo) =>
+      ((v.maxAtk || 0) + (v.minAtk || 0)) / 2 + (v.neglectDef || 0),
     (v: EquipInfo) => (v.def || 0) + (v.magicDef || 0),
     (v: EquipInfo) => v.strCritsRate || 0,
     (v: EquipInfo) => v.strCritsDamageRate || 0,
@@ -722,7 +741,7 @@ export const PreferAttrConfigs1 = {
   ],
   magic: [
     (v: EquipInfo) =>
-      (v.maxMagic || 0) + (v.minMagic || 0) + (v.neglectMagicDef || 0),
+      ((v.maxMagic || 0) + (v.minMagic || 0)) / 2 + (v.neglectMagicDef || 0),
     (v: EquipInfo) => (v.def || 0) + (v.magicDef || 0),
     (v: EquipInfo) => v.strCritsRate || 0,
     (v: EquipInfo) => v.strCritsDamageRate || 0,
@@ -783,10 +802,13 @@ export const maps = [
   { name: '矿坑东', minLvl: 11, maxLvl: 24 },
   { name: '矿坑北', minLvl: 14, maxLvl: 18 },
   { name: '矿坑深处', minLvl: 18, maxLvl: 28 },
-  { name: '神秘坑道', minLvl: 0, maxLvl: 0 },
   { name: '血色森林', minLvl: 15, maxLvl: 25 },
   { name: '守护者大殿', minLvl: 20, maxLvl: 30 },
   { name: '封魔谷', minLvl: 20, maxLvl: 99 },
+
+  { name: '神秘坑道', minLvl: 0, maxLvl: 0 },
+  { name: '练功房①', minLvl: 0, maxLvl: 0 },
+  { name: '练功房②', minLvl: 0, maxLvl: 0 },
 ];
 
 //TODO: 长眠之地守护者 1根千年尸骨

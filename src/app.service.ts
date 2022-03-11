@@ -67,7 +67,7 @@ export class Bot {
       if (this.destroyed) {
         throw new Error('Destroyed.');
       }
-      this.debug(`${req.method} ${req.url}`);
+      this.debug(`${req.method} ${req.url} ${JSON.stringify(req.data)}`);
       req.headers = req.headers || {};
       req.headers.token = this.token;
       return req;
@@ -156,6 +156,10 @@ export class Bot {
   }
 
   async scriptHome() {
+    if (this.pos.name === '初始大陆') {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return;
+    }
     return this.findPathHome();
   }
 
@@ -168,8 +172,11 @@ export class Bot {
     // 回城补给
     if (this.needBuy()) {
       this.debug('needBuy');
-      this.mapName = null;
-      this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
+      if (this.mapName) {
+        this.log('回城补给');
+        this.mapName = null;
+        this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
+      }
       return await this.thinkBuy();
     }
 
@@ -200,6 +207,9 @@ export class Bot {
   }
 
   findBestMap() {
+    if (this.config.wishLevel > this.player.lv && this.player.gold >= 100000) {
+      return Math.random() < 0.5 ? '练功房①' : '练功房②';
+    }
     const choices = maps.filter(
       (v) => v.minLvl <= this.player.lv && v.maxLvl >= this.player.lv,
     );
@@ -233,7 +243,7 @@ export class Bot {
     );
 
     if (!npc || !this.isInAttackRange(npc, 1)) {
-      if (await this.thinkBattle()) {
+      if (await this.thinkBattle(true)) {
         return;
       }
       return this.moveTo(task.npc);
@@ -245,7 +255,7 @@ export class Bot {
     }
   }
 
-  async thinkBattle() {
+  async thinkBattle(isFindPath?: boolean) {
     this.debug('thinkBattle');
     if (this.lastKilled && !this.lastTarget) {
       await this.randomMove();
@@ -255,12 +265,14 @@ export class Bot {
     await this.tryUseGoods();
     await this.thinkEquips();
 
-    const target = this.findMonster();
+    const target = this.findMonster(isFindPath);
     if (!target) {
+      this.debug('no target');
       return false;
     }
 
     if (!this.isInAttackRange(target)) {
+      this.debug('move to target');
       await this.moveTo(target);
       return true;
     }
@@ -301,6 +313,7 @@ export class Bot {
       data.normalNews.substr(0, 4) === '你已阵亡'
     ) {
       this.lastBuyAt = 0;
+      console.log(`警告：${this.username}阵亡`);
     }
     // this.log(
     //   `血量：${this.player.hp_c}/${this.player.hp}，金钱：${this.player.gold}，经验：${this.player.exp}/${this.player.lvUpExp}`,
@@ -337,7 +350,7 @@ export class Bot {
         continue;
       }
       const currCount = map[item.id]?.count || 0;
-      if (currCount < 10) {
+      if (currCount < (this.config.minBuyCount || 10)) {
         return true;
       }
     }
@@ -360,20 +373,23 @@ export class Bot {
 
   async findPath(targetMap, battle?: boolean) {
     this.debug(`findPath: ${targetMap} battle=${battle}`);
-    if (battle && (await this.thinkBattle())) {
+    if (battle && (await this.thinkBattle(true))) {
       return;
     }
     const nextIo = findNextIo(this.pos.name, targetMap);
     if (!nextIo) {
       throw new Error(`找不到路径前往${targetMap}`);
     }
+    this.debug(`nextIo: ${JSON.stringify(nextIo)}`);
     const target = this.mapUnits.find(
-      (v) => v.name === nextIo.name && v.x === nextIo.x && v.y === nextIo.y,
+      (v) => v.name === nextIo.name && v.x == nextIo.x && v.y == nextIo.y,
     );
     if (!target) {
+      this.debug('No io target, move to.');
       return this.moveTo(nextIo);
     }
     if (!this.isInAttackRange(target, 1)) {
+      this.debug('Not in attack range, move to');
       return this.moveTo(target);
     }
     const data = await this.hey(target);
@@ -644,7 +660,7 @@ export class Bot {
     );
   }
 
-  findMonster() {
+  findMonster(isFindPath: boolean) {
     if (this.lastTarget) {
       const m = this.mapUnits.find((v) => v.id === this.lastTarget);
       if (m) {
@@ -672,6 +688,9 @@ export class Bot {
         continue;
       }
       const data = monsterMap.get(v.name);
+      if (isFindPath && data.notInPath) {
+        continue;
+      }
       if (this.player.lv < data.minLv || this.player.lv > data.maxLv) {
         continue;
       }
@@ -862,8 +881,6 @@ export class AppService {
       }
       this.bots.set(config.username, bot);
       bot.run();
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     if (dirty) {
       writeFileSync('config.json', JSON.stringify(this.configs, null, 2));

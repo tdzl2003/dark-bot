@@ -110,6 +110,10 @@ export interface BotConfig {
    */
   mapName?: string;
   /**
+   * 智能买药最少数量，低于此数量会回城。初始建议设置成10，后面建议设置成100
+   */
+  minBuyCount?: number;
+  /**
    * 智能买药最大上限，推荐设置成2000
    */
   maxBuyCount?: number;
@@ -125,6 +129,10 @@ export interface BotConfig {
    * 是否显示详细AI决策过程
    */
   debug?: boolean;
+  /**
+   * 想要打沙包练到多少级
+   */
+  wishLevel?: number;
 }
 
 export interface AccountConfig {
