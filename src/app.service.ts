@@ -444,7 +444,11 @@ export class Bot {
       prices[item.goodsId] = Number(item.sellGold);
     }
     const buyItems = [];
-    if (this.player.lv >= 10 && !map['62258de568314c57c17abef8']) {
+    if (
+      this.player.lv >= 10 &&
+      !map['62258de568314c57c17abef8'] &&
+      gold >= 10000
+    ) {
       // 10级以上买回城石
       buyItems.push({
         goodsId: '62258de568314c57c17abef8',
