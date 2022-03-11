@@ -67,9 +67,14 @@ export class Bot {
       if (this.destroyed) {
         throw new Error('Destroyed.');
       }
+      this.debug(`${req.method} ${req.url}`);
       req.headers = req.headers || {};
       req.headers.token = this.token;
       return req;
+    });
+    this.axios.interceptors.response.use((resp) => {
+      this.debug(`${JSON.stringify(resp.data)}`);
+      return resp;
     });
   }
 
@@ -284,7 +289,9 @@ export class Bot {
         const idx2 = (monsterData.dropEquips || []).indexOf(item);
         if (idx1 < 0 && idx2 < 0) {
           this.log(items.join(','));
-          this.log(`未记录的掉落：${target.name}：${item}`);
+          console.log(
+            `${this.username}: 未记录的掉落：${target.name}：${item}`,
+          );
         }
       }
     }
@@ -377,7 +384,7 @@ export class Bot {
     if (this.pos.name !== nextIo.toMap) {
       if (this.pos.name !== nextIo.map) {
         console.log(
-          `错误的入口数据： ${nextIo.map} ${nextIo.x} ${nextIo.y} ${nextIo.name} ${this.pos.name}`,
+          `${this.username}: 错误的入口数据： ${nextIo.map} ${nextIo.x} ${nextIo.y} ${nextIo.name} ${this.pos.name}`,
         );
       }
     }
@@ -496,7 +503,9 @@ export class Bot {
         continue;
       }
       if (!goodsMap.has(item.goodsId)) {
-        console.log(`未知的物品：${item.goodsId}, ${item.name}, ${item.mark}`);
+        console.log(
+          `${this.username}: 未知的物品：${item.goodsId}, ${item.name}, ${item.mark}`,
+        );
       }
     }
     this.debug('买进物品：' + JSON.stringify(buyItems));
@@ -712,33 +721,35 @@ export class Bot {
           v.type === 'herb'
         ) {
           if (!monsterMap.has(v.name)) {
-            this.log(
-              `未知怪物：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
+            console.log(
+              `${this.username}: 未知怪物：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
             );
             continue;
           }
           const rec = monsterMap.get(v.name);
           if (rec.hp !== v.hp || rec.lv !== v.lv || rec.type !== v.type) {
-            this.log(
-              `错误的怪物信息：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
+            console.log(
+              `${this.username}: 错误的怪物信息：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
             );
           }
           if (rec.maps.indexOf(this.pos.name) < 0) {
-            this.log(`未知怪物出现地图：${v.name} ${this.pos.name}`);
+            console.log(
+              `${this.username}: 未知怪物出现地图：${v.name} ${this.pos.name}`,
+            );
           }
         } else if (v.type === 'npc') {
           const key = [this.pos.name, v.x || 0, v.y || 0, v.name].join('-');
           if (!npcMap.has(key) && !ioMap.has(key)) {
-            this.log(
-              `未知NPC： ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
+            console.log(
+              `${this.username}: 未知NPC： ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
             );
             continue;
           }
         } else if (v.type === 'io') {
           const key = [this.pos.name, v.x, v.y, v.name].join('-');
           if (!ioMap.has(key)) {
-            this.log(
-              `未知出入口： ${v.id} ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
+            console.log(
+              `${this.username}: 未知出入口： ${v.id} ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
             );
             continue;
           }
