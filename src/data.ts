@@ -245,6 +245,7 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 12,
     maxLv: 17,
+    dropGoods: ['中血瓶', '中蓝瓶'],
     dropEquips: ['铁意头盔'],
   },
   {
@@ -473,6 +474,10 @@ export const goods: GoodData[] = [
   {
     id: '62289d1adeaf7007029c0916',
     name: '铝矿',
+  },
+  {
+    id: '622a347acf325f417e54c88a',
+    name: '基础剑法',
   },
   {
     id: '6224e4219962680c308d3277',

@@ -445,6 +445,11 @@ export class Bot {
     const prices = {};
     for (const item of shop.goods) {
       prices[item.goodsId] = Number(item.sellGold);
+      if (!goodsMap.has(item.goodsId)) {
+        console.log(
+          `${this.username}: 未知物品：${item.goodsId} ${item.name} ${item.mark}`,
+        );
+      }
     }
     const buyItems = [];
     if (
