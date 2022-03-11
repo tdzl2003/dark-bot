@@ -661,6 +661,9 @@ export class Bot {
       if (this.player.lv < data.minLv || this.player.lv > data.maxLv) {
         continue;
       }
+      if (data.immutableType === this.config.preferAttr) {
+        continue;
+      }
       const dis =
         Math.max(0, Math.abs(x - v.x) - this.player.attackDistance) +
         Math.max(0, Math.abs(y - v.y) - this.player.attackDistance);

@@ -39,6 +39,7 @@ export interface MonsterData {
   lv: number;
   type: 'm1' | 'm2' | 'm3' | 'm4' | 'herb';
   maps: string[];
+  immutableType?: string;
   dropGoods?: string[];
   dropEquips?: string[];
 
@@ -254,6 +255,7 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 13,
     maxLv: 18,
+    immutableType: 'melee',
     dropEquips: ['铁意头盔'],
   },
   {
@@ -262,6 +264,7 @@ export const monsters: MonsterData[] = [
     lv: 16,
     type: 'm2',
     maps: ['矿坑东'],
+    immutableType: 'magic',
     minLv: 16,
     maxLv: 26,
   },
