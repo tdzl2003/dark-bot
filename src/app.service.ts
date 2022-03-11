@@ -121,8 +121,7 @@ export class Bot {
       }
       this.log('退出');
     } catch (e) {
-      this.log(e.message);
-      console.error(e.stack);
+      console.error(this.username, e.stack);
       // 干掉所有进程，确保我能看到错误
       if (!axios.isAxiosError(e)) {
         for (const [k, v] of this.service.bots.entries()) {
@@ -344,7 +343,10 @@ export class Bot {
 
   needBuy() {
     // 有战斗目标时不回城。
-    if (this.lastTarget || this.player.gold < 1000) {
+    if (
+      (this.lastTarget && this.lastKilled !== '沙包') ||
+      this.player.gold < 1000
+    ) {
       return false;
     }
     // 每小时必然购买一次。
@@ -383,9 +385,7 @@ export class Bot {
 
   async findPath(targetMap, battle?: boolean) {
     this.debug(`findPath: ${targetMap} battle=${battle}`);
-    if (battle && (await this.thinkBattle(true))) {
-      return;
-    }
+
     const nextIo = findNextIo(this.pos.name, targetMap);
     if (!nextIo) {
       throw new Error(`找不到路径前往${targetMap}`);
@@ -395,6 +395,9 @@ export class Bot {
       (v) => v.name === nextIo.name && v.x == nextIo.x && v.y == nextIo.y,
     );
     if (!target) {
+      if (battle && (await this.thinkBattle(true))) {
+        return;
+      }
       this.debug('No io target, move to.');
       return this.moveTo(nextIo);
     }
@@ -407,12 +410,10 @@ export class Bot {
       this.log(`${data.confirm.title}：${data.confirm.content}`);
       await this.task(data.confirm.npc, data.confirm.tid);
     }
-    if (this.pos.name !== nextIo.toMap) {
-      if (this.pos.name !== nextIo.map) {
-        console.log(
-          `${this.username}: 错误的入口数据： ${nextIo.map} ${nextIo.x} ${nextIo.y} ${nextIo.name} ${this.pos.name}`,
-        );
-      }
+    if (this.pos.name !== nextIo.toMap && this.pos.name !== nextIo.map) {
+      console.log(
+        `${this.username}: 错误的入口数据： ${nextIo.map} ${nextIo.x} ${nextIo.y} ${nextIo.name} ${this.pos.name}`,
+      );
     }
   }
 
@@ -461,10 +462,11 @@ export class Bot {
       await this.moveTo(target);
       return;
     }
-    const { shop } = await this.hey(target);
-    if (!shop) {
+    const data = await this.hey(target);
+    if (!data || !data.shop) {
       throw new Error('店铺交互失败');
     }
+    const { shop } = data;
     this.log(`在店铺${shop.name}补给`);
 
     let gold = this.player.gold;
