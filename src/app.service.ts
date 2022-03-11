@@ -135,7 +135,7 @@ export class Bot {
       throw new Error('未配置技能。');
     }
     switch (this.config.script) {
-      case 'scriptIdle': {
+      case 'idle': {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         break;
       }
