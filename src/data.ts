@@ -770,11 +770,11 @@ export interface MapData {
 export const maps = [
   { name: '初始大陆', minLvl: 1, maxLvl: 9 },
   { name: '东部矿坑', minLvl: 10, maxLvl: 10 },
-  { name: '矿坑东', minLvl: 11, maxLvl: 20 },
-  { name: '矿坑北', minLvl: 14, maxLvl: 20 },
+  { name: '矿坑东', minLvl: 11, maxLvl: 24 },
+  { name: '矿坑北', minLvl: 14, maxLvl: 18 },
   { name: '矿坑深处', minLvl: 18, maxLvl: 28 },
   { name: '神秘坑道', minLvl: 0, maxLvl: 0 },
-  { name: '血色森林', minLvl: 15, maxLvl: 20 },
+  { name: '血色森林', minLvl: 15, maxLvl: 25 },
   { name: '守护者大殿', minLvl: 20, maxLvl: 30 },
   { name: '封魔谷', minLvl: 20, maxLvl: 99 },
 ];
