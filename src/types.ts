@@ -133,6 +133,11 @@ export interface BotConfig {
    * 想要打沙包练到多少级
    */
   wishLevel?: number;
+
+  /**
+   * 要存多少钱。钱比这个少就不打沙包和BOSS了，出门打工。而且会主动选择矿区图
+   */
+  wishGold?: number;
 }
 
 export interface AccountConfig {

@@ -173,7 +173,7 @@ export class Bot {
     if (this.needBuy()) {
       this.debug('needBuy');
       if (this.mapName) {
-        this.log('回城补给');
+        console.log(`${this.username}: 回城补给`);
         this.mapName = null;
         this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
       }
@@ -207,12 +207,22 @@ export class Bot {
   }
 
   findBestMap() {
-    if (this.config.wishLevel > this.player.lv && this.player.gold >= 100000) {
+    if (
+      this.config.wishLevel > this.player.lv &&
+      this.player.gold >= this.config.wishGold
+    ) {
       return Math.random() < 0.5 ? '练功房①' : '练功房②';
     }
-    const choices = maps.filter(
+    let choices = maps.filter(
       (v) => v.minLvl <= this.player.lv && v.maxLvl >= this.player.lv,
     );
+    if (this.player.gold < this.config.wishGold) {
+      // 钱不足时不打BOSS
+      choices = choices.filter((v) => v.earnMoney);
+      if (choices.length === 0) {
+        choices = maps.filter((v) => v.earnMoney);
+      }
+    }
     if (choices.length === 0) {
       throw new Error('没有可去的地图！');
     }
@@ -639,13 +649,16 @@ export class Bot {
     const dx = target.x - this.pos.x,
       dy = target.y - this.pos.y;
     let { x, y } = this.pos;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      const dis = Math.min(this.player.speed, Math.abs(dx));
-      x += Math.sign(dx) * dis;
-    } else {
-      const dis = Math.min(this.player.speed, Math.abs(dy));
-      y += Math.sign(dy) * dis;
+    let dis = this.player.speed;
+    if (dx) {
+      dis = Math.min(dis, Math.abs(dx));
     }
+    if (dy) {
+      dis = Math.min(dis, Math.abs(dy));
+    }
+
+    x += Math.sign(dx) * dis;
+    y += Math.sign(dy) * dis;
 
     // this.log(`移动到：${x},${y}（目标：${target.x},${target.y}）`);
 
