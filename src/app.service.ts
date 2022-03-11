@@ -790,7 +790,9 @@ export class Bot {
         const idx2 = (monsterData.dropEquips || []).indexOf(item);
         if (idx1 < 0 && idx2 < 0) {
           this.log(tempDropMsg.join(','));
-          this.log(`未记录的掉落：${this.lastKilled}：${item}`);
+          console.log(
+            `${this.username}: 未记录的掉落：${this.lastKilled}：${item}`,
+          );
         }
       }
     }
