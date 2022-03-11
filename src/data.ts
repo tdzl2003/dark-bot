@@ -277,6 +277,127 @@ export const monsters: MonsterData[] = [
   },
 
   {
+    name: '尸王',
+    hp: 3000,
+    lv: 18,
+    type: 'm3',
+    maps: ['矿坑深处'],
+    minLv: 18,
+    maxLv: 99,
+  },
+
+  {
+    name: '血色信徒',
+    hp: 530,
+    lv: 15,
+    type: 'm1',
+    maps: ['血色森林'],
+    minLv: 15,
+    maxLv: 20,
+  },
+  {
+    name: '血色狂热者',
+    hp: 840,
+    lv: 17,
+    type: 'm2',
+    maps: ['血色森林'],
+    minLv: 17,
+    maxLv: 27,
+  },
+  {
+    name: '血色主教',
+    hp: 5000,
+    lv: 19,
+    type: 'm3',
+    maps: ['血色森林'],
+    minLv: 19,
+    maxLv: 999,
+  },
+
+  {
+    name: '李奥瑞克',
+    hp: 12000,
+    lv: 20,
+    type: 'm4',
+    maps: ['守护者大殿'],
+    minLv: 20,
+    maxLv: 999,
+  },
+
+  {
+    name: '蜥蜴人',
+    hp: 1510,
+    lv: 20,
+    type: 'm1',
+    maps: ['封魔谷'],
+    minLv: 20,
+    maxLv: 25,
+  },
+  {
+    name: '半兽人',
+    hp: 1810,
+    lv: 21,
+    type: 'm1',
+    maps: ['封魔谷'],
+    minLv: 21,
+    maxLv: 26,
+  },
+  {
+    name: '骷髅战士',
+    hp: 1948,
+    lv: 22,
+    type: 'm1',
+    maps: ['封魔谷'],
+    minLv: 22,
+    maxLv: 27,
+  },
+  {
+    name: '骷髅法师',
+    hp: 1810,
+    lv: 23,
+    type: 'm1',
+    maps: ['封魔谷'],
+    minLv: 23,
+    maxLv: 28,
+  },
+  {
+    name: '骷髅精灵',
+    hp: 4000,
+    lv: 25,
+    type: 'm2',
+    maps: ['封魔谷'],
+    minLv: 25,
+    maxLv: 35,
+  },
+  {
+    name: '半兽人勇士',
+    hp: 5000,
+    lv: 26,
+    type: 'm2',
+    maps: ['封魔谷'],
+    minLv: 26,
+    maxLv: 36,
+  },
+  {
+    name: '半兽人统领',
+    hp: 13000,
+    lv: 27,
+    type: 'm3',
+    maps: ['封魔谷'],
+    minLv: 27,
+    maxLv: 99,
+  },
+  {
+    name: '半人马战行者',
+    hp: 20000,
+    lv: 28,
+    type: 'm3',
+    maps: ['封魔谷'],
+    minLv: 28,
+    maxLv: 99,
+  },
+
+  {
     name: '基尔加丹',
     hp: 3000000,
     lv: 9999,
@@ -391,6 +512,18 @@ export const npc: NpcData[] = [
     x: 26,
     y: 50,
   },
+  {
+    name: '神秘人',
+    map: '神秘坑道',
+    x: 0,
+    y: 0,
+  },
+  {
+    name: '长眠之地守护者',
+    map: '矿坑深处',
+    x: 10,
+    y: 10,
+  },
 ];
 export const npcMap = arrayToMap(npc, (v) =>
   [v.map, v.x, v.y, v.name].join('-'),
@@ -475,7 +608,7 @@ export const io: IoData[] = [
     map: '矿坑东',
     x: 0,
     y: 20,
-    toMap: '神秘通道',
+    toMap: '神秘坑道',
   },
 
   {
@@ -484,6 +617,60 @@ export const io: IoData[] = [
     x: 40,
     y: 10,
     toMap: '东部矿坑',
+  },
+  {
+    name: '矿坑深处',
+    map: '矿坑北',
+    x: 0,
+    y: 10,
+    toMap: '矿坑深处',
+  },
+
+  {
+    name: '矿坑北',
+    map: '矿坑深处',
+    x: 18,
+    y: 2,
+    toMap: '矿坑北',
+  },
+
+  {
+    name: '矿坑东',
+    map: '神秘坑道',
+    x: 1,
+    y: 0,
+    toMap: '矿坑东',
+  },
+
+  {
+    name: '初始大陆',
+    map: '血色森林',
+    x: 0,
+    y: 30,
+    toMap: '初始大陆',
+  },
+  {
+    name: '守护者大殿',
+    map: '血色森林',
+    x: 15,
+    y: 15,
+    toMap: '守护者大殿',
+  },
+
+  {
+    name: '血色森林',
+    map: '守护者大殿',
+    x: 15,
+    y: 8,
+    toMap: '血色森林',
+  },
+
+  {
+    name: '初始大陆',
+    map: '封魔谷',
+    x: 1,
+    y: 0,
+    toMap: '初始大陆',
   },
 ];
 export const ioMap = arrayToMap(io, (v) => [v.map, v.x, v.y, v.name].join('-'));
@@ -584,9 +771,12 @@ export const maps = [
   { name: '初始大陆', minLvl: 1, maxLvl: 9 },
   { name: '东部矿坑', minLvl: 10, maxLvl: 10 },
   { name: '矿坑东', minLvl: 11, maxLvl: 20 },
-
-  { name: '矿坑北', minLvl: 1, maxLvl: 99 },
-  { name: '神秘通道', minLvl: 1, maxLvl: 99 },
-  { name: '血色森林', minLvl: 1, maxLvl: 99 },
-  { name: '封魔谷', minLvl: 1, maxLvl: 99 },
+  { name: '矿坑北', minLvl: 14, maxLvl: 20 },
+  { name: '矿坑深处', minLvl: 18, maxLvl: 28 },
+  { name: '神秘坑道', minLvl: 0, maxLvl: 0 },
+  { name: '血色森林', minLvl: 15, maxLvl: 20 },
+  { name: '守护者大殿', minLvl: 20, maxLvl: 30 },
+  { name: '封魔谷', minLvl: 20, maxLvl: 99 },
 ];
+
+//TODO: 长眠之地守护者 1根千年尸骨

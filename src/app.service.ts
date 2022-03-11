@@ -280,7 +280,7 @@ export class Bot {
         const idx2 = (monsterData.dropEquips || []).indexOf(item);
         if (idx1 < 0 && idx2 < 0) {
           this.log(items.join(','));
-          console.log(`未记录的掉落：${target.name}：${item}`);
+          this.log(`未记录的掉落：${target.name}：${item}`);
         }
       }
     }
@@ -705,44 +705,35 @@ export class Bot {
           v.type === 'herb'
         ) {
           if (!monsterMap.has(v.name)) {
-            console.log(
+            this.log(
               `未知怪物：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
             );
+            continue;
           }
           const rec = monsterMap.get(v.name);
           if (rec.hp !== v.hp || rec.lv !== v.lv || rec.type !== v.type) {
-            console.log(
+            this.log(
               `错误的怪物信息：${v.name}, hp: ${v.hp}, lv: ${v.lv}, type: ${v.type}, maps: ${this.pos.name}`,
             );
           }
           if (rec.maps.indexOf(this.pos.name) < 0) {
-            console.log(`未知怪物出现地图：${v.name} ${this.pos.name}`);
+            this.log(`未知怪物出现地图：${v.name} ${this.pos.name}`);
           }
         } else if (v.type === 'npc') {
-          const key = [this.pos.name, v.x, v.y, v.name].join('-');
+          const key = [this.pos.name, v.x || 0, v.y || 0, v.name].join('-');
           if (!npcMap.has(key) && !ioMap.has(key)) {
-            console.log(
+            this.log(
               `未知NPC： ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
             );
-          }
-          const rec = npcMap.get(key) || ioMap.get(key);
-          if (rec.x != v.x || rec.y != v.y || rec.map !== this.pos.name) {
-            console.log(
-              `错误的NPC数据： ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
-            );
+            continue;
           }
         } else if (v.type === 'io') {
           const key = [this.pos.name, v.x, v.y, v.name].join('-');
           if (!ioMap.has(key)) {
-            console.log(
+            this.log(
               `未知出入口： ${v.id} ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
             );
-          }
-          const rec = ioMap.get(key);
-          if (rec.x != v.x || rec.y != v.y || rec.map !== this.pos.name) {
-            console.log(
-              `错误的出入口数据： ${v.name}, x:${v.x}, y:${v.y} maps: ${this.pos.name}`,
-            );
+            continue;
           }
         }
       }
@@ -781,7 +772,7 @@ export class Bot {
         const idx2 = (monsterData.dropEquips || []).indexOf(item);
         if (idx1 < 0 && idx2 < 0) {
           this.log(tempDropMsg.join(','));
-          console.log(`未记录的掉落：${this.lastKilled}：${item}`);
+          this.log(`未记录的掉落：${this.lastKilled}：${item}`);
         }
       }
     }
@@ -793,10 +784,6 @@ export class AppService {
   configs: AccountConfig[] = [];
   bots: Map<string, Bot> = new Map();
 
-  constructor() {
-    // this.test();
-    this.init();
-  }
   async init() {
     await this.load();
     let timer = null;
