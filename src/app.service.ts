@@ -325,10 +325,6 @@ export class Bot {
     for (const item of this.goodsList) {
       map[item.id] = item;
     }
-    // 10级以上必带回城石一个
-    if (this.player.lv >= 10 && !map['62258de568314c57c17abef8']) {
-      return true;
-    }
     for (const item of goods) {
       if (!item.shouldBuy || !item.shouldBuy(this)) {
         continue;
