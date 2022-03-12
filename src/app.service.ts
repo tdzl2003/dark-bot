@@ -464,7 +464,7 @@ export class Bot {
     }
     const data = await this.hey(target);
     if (!data || !data.shop) {
-      console.log('店铺交互失败');
+      this.log('店铺交互失败');
       return;
     }
     const { shop } = data;
