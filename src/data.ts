@@ -268,7 +268,8 @@ export const monsters: MonsterData[] = [
     minLv: 13,
     maxLv: 18,
     immutableType: 'melee',
-    dropEquips: ['铁意头盔'],
+    dropGoods: ['中血瓶', '中蓝瓶'],
+    dropEquips: ['铁意头盔', '力量手镯'],
   },
   {
     name: '大岩蛇',
@@ -289,6 +290,8 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑北'],
     minLv: 15,
     maxLv: 20,
+    dropGoods: ['中血瓶'],
+    dropEquips: ['信条面巾', '重盔甲'],
   },
 
   {
