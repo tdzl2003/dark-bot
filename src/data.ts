@@ -701,6 +701,8 @@ export const PreferAttrConfigs1 = {
     (v: EquipInfo) => v.strCritsDamageRate || 0,
     (v: EquipInfo) =>
       (v.speed || 0) + (v.attackSpeed || 0) + (v.moveSpeed || 0),
+    (v: EquipInfo) => v.hpSec || 0,
+    (v: EquipInfo) => v.mpSec || 0,
     (v: EquipInfo) => v.hp || 0,
     (v: EquipInfo) => v.attackDistance || 0,
     (v: EquipInfo) => v.vision || 0,
@@ -716,6 +718,8 @@ export const PreferAttrConfigs1 = {
     (v: EquipInfo) => v.strCritsDamageRate || 0,
     (v: EquipInfo) =>
       (v.speed || 0) + (v.attackSpeed || 0) + (v.moveSpeed || 0),
+    (v: EquipInfo) => v.hpSec || 0,
+    (v: EquipInfo) => v.mpSec || 0,
     (v: EquipInfo) => v.hp || 0,
     (v: EquipInfo) => v.attackDistance || 0,
     (v: EquipInfo) => v.vision || 0,
@@ -755,12 +759,12 @@ export const tasks: TaskData[] = [
   },
   {
     id: '铁矿',
-    condition: (v) => v.hasGood('铁矿', 100),
+    condition: (v) => v.hasGood('铁矿', 1000),
     npc: npcMap.get('初始大陆-26-50-铁矿商人'),
   },
   {
     id: '铝矿',
-    condition: (v) => v.hasGood('铝矿', 100),
+    condition: (v) => v.hasGood('铝矿', 1000),
     npc: npcMap.get('初始大陆-24-50-铝矿商人'),
   },
 ];

@@ -20,6 +20,9 @@ export interface Attrs {
   intCritsDamageRate: number;
   intCritsRate: number;
   neglectMagicDef: number;
+
+  hpSec: number;
+  mpSec: number;
 }
 
 export interface PlayerInfo extends Attrs {
@@ -36,9 +39,7 @@ export interface PlayerInfo extends Attrs {
   mp_c: number;
 
   hpRecovery: number;
-  hpSec: number;
   mpRecovery: number;
-  mpSec: number;
 
   damage: number;
 }
@@ -99,6 +100,13 @@ export interface SkillInfo {
   maturity: number;
   name: string;
   type: number;
+}
+
+export interface FbInfo {
+  lv: number;
+  quality: number;
+  exp: number;
+  readyLvUp: boolean;
 }
 
 export interface BotConfig {

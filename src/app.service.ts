@@ -19,6 +19,7 @@ import {
   AccountConfig,
   BotConfig,
   EquipInfo,
+  FbInfo,
   GoodInfo,
   MapUnit,
   PlayerInfo,
@@ -35,6 +36,7 @@ export class Bot {
   mapUnits: MapUnit[];
   player: PlayerInfo;
   pos: PosInfo;
+  fb: FbInfo;
   skillList: SkillInfo[];
 
   randomMoveTarget?: { x: number; y: number };
@@ -180,6 +182,8 @@ export class Bot {
       return;
     }
 
+    await this.fbLvUp();
+
     // 选择刷怪地图
     if (!this.mapName) {
       if (this.config.mapName) {
@@ -206,6 +210,22 @@ export class Bot {
     if (!(await this.thinkBattle())) {
       await this.randomMove();
     }
+  }
+  async fbLvUp() {
+    if (!this.fb.readyLvUp) {
+      const maxExp = Math.pow(1 + this.fb.quality, 2) * 100;
+      if (this.fb.exp < maxExp || this.fb.lv >= 9) {
+        return;
+      }
+      this.log('法宝升级');
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const resp = await this.axios.post('/readyToLvUpFB', {});
+      this.handleResponse(resp.data.data);
+    }
+    this.log('法宝升级保存');
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const resp = await this.axios.post('/confirmToLvUpFB', { ok: true });
+    this.handleResponse(resp.data.data);
   }
 
   findBestMap() {
@@ -776,6 +796,7 @@ export class Bot {
       pos,
       skillList,
       tempDropMsg,
+      fb,
     } = data;
     this.player = { ...this.player, ...player };
     if (pos) {
@@ -849,6 +870,9 @@ export class Bot {
     }
     if (goodsNews) {
       this.log(goodsNews);
+    }
+    if (fb) {
+      this.fb = { ...this.fb, ...fb };
     }
 
     if (tempDropMsg) {
