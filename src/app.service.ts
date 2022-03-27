@@ -260,9 +260,13 @@ export class Bot {
     const data = await this.hey(npc);
     if (data && data.confirm && data.confirm.tid) {
       this.log(`${data.confirm.title}：${data.confirm.content}`);
-      await new Promise((resolve) => setTimeout(resolve, 650));
-      await this.task(data.confirm.npc, data.confirm.tid);
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 650));
+        await this.task(data.confirm.npc, data.confirm.tid);
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      } catch (e) {
+        this.log('提交任务失败，刷新后重试');
+      }
       await this.refreshEquips();
     }
     if (task.once) {
@@ -854,16 +858,17 @@ export class Bot {
 export class AppService {
   configs: AccountConfig[] = [];
   bots: Map<string, Bot> = new Map();
+  lastLoadPromise = null;
 
-  async init() {
-    await this.load();
+  init() {
+    this.lastLoadPromise = this.load();
     let timer = null;
 
     watch('config.json', {}, () => {
       if (!timer) {
         timer = setTimeout(() => {
           timer = null;
-          this.load();
+          this.lastLoadPromise = this.load();
         }, 1000);
       }
     });
