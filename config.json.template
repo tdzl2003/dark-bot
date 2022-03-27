@@ -7,7 +7,6 @@
       "debug": false,
       "log": true,
       "mapName": undefined,
-      "maxBuyCount": 2000,
       "script": "scriptBattle",
       "skillId": "621ba739e0f78648a8c27d70",
       "preferAttr": "melee"
