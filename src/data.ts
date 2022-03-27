@@ -60,17 +60,6 @@ function arrayToMap<T, K>(a: T[], key: (v: T) => K) {
 
 export const monsters: MonsterData[] = [
   {
-    name: '沙包',
-    hp: 999999,
-    lv: 999,
-    type: 'm4',
-    maps: ['练功房①', '练功房②'],
-    minLv: 1,
-    maxLv: 999,
-    notInPath: true,
-    requireHp: 10,
-  },
-  {
     name: '黑漆漆的树',
     hp: 1,
     lv: 1,
@@ -550,20 +539,6 @@ export const npcMap = arrayToMap(npc, (v) =>
 
 export const io: IoData[] = [
   {
-    name: '练功房①',
-    map: '初始大陆',
-    x: 0,
-    y: 0,
-    toMap: '练功房①',
-  },
-  {
-    name: '练功房②',
-    map: '初始大陆',
-    x: 0,
-    y: 1,
-    toMap: '练功房②',
-  },
-  {
     name: '血色森林',
     map: '初始大陆',
     x: 50,
@@ -585,22 +560,6 @@ export const io: IoData[] = [
     toMap: '封魔谷',
     requireLevel: 20,
   },
-
-  {
-    name: '初始大陆',
-    map: '练功房①',
-    x: 0,
-    y: 0,
-    toMap: '初始大陆',
-  },
-  {
-    name: '初始大陆',
-    map: '练功房②',
-    x: 0,
-    y: 0,
-    toMap: '初始大陆',
-  },
-
   {
     name: '初始大陆',
     map: '东部矿坑',
@@ -804,8 +763,8 @@ export interface MapData {
   requireGold?: number;
   requireHpRecovery?: number; // 低于这个值就回城了。
   requireMpRecovery?: number; // 低于这个值就回城了。
-  targetHpRecovery?: number; // 买到这个值
-  targetMpRecovery?: number; // 买到这个值
+  targetHpRecovery: number; // 买到这个值
+  targetMpRecovery: number; // 买到这个值
   prior: number; // 0: 打钱；1: 打装备；2:打boss
 }
 
@@ -817,8 +776,8 @@ export const maps: MapData[] = [
     prior: 0,
     requireHpRecovery: 1,
     requireMpRecovery: 1,
-    targetHpRecovery: 10000,
-    targetMpRecovery: 10000,
+    targetHpRecovery: 50000,
+    targetMpRecovery: 50000,
   },
   {
     name: '东部矿坑',
@@ -828,19 +787,72 @@ export const maps: MapData[] = [
     requireGold: 1e4,
     requireHpRecovery: 1000,
     requireMpRecovery: 1000,
-    targetHpRecovery: 100000,
-    targetMpRecovery: 100000,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
   },
-  { name: '矿坑东', minLvl: 11, maxLvl: 24, prior: 1, requireGold: 1e6 },
-  { name: '矿坑北', minLvl: 14, maxLvl: 18, prior: 1, requireGold: 1e6 },
-  { name: '矿坑深处', minLvl: 18, maxLvl: 28, prior: 1, requireGold: 1e7 },
-  { name: '血色森林', minLvl: 15, maxLvl: 25, prior: 1, requireGold: 1e6 },
-  { name: '守护者大殿', minLvl: 20, maxLvl: 30, prior: 1, requireGold: 1e7 },
-  { name: '封魔谷', minLvl: 20, maxLvl: 99, prior: 1, requireGold: 1e6 },
+  {
+    name: '矿坑东',
+    minLvl: 11,
+    maxLvl: 24,
+    prior: 1,
+    requireGold: 1e6,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
+  {
+    name: '矿坑北',
+    minLvl: 14,
+    maxLvl: 18,
+    prior: 1,
+    requireGold: 1e6,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
+  {
+    name: '矿坑深处',
+    minLvl: 18,
+    maxLvl: 28,
+    prior: 1,
+    requireGold: 1e7,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
+  {
+    name: '血色森林',
+    minLvl: 15,
+    maxLvl: 25,
+    prior: 1,
+    requireGold: 1e6,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
+  {
+    name: '守护者大殿',
+    minLvl: 20,
+    maxLvl: 30,
+    prior: 1,
+    requireGold: 1e7,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
+  {
+    name: '封魔谷',
+    minLvl: 20,
+    maxLvl: 99,
+    prior: 1,
+    requireGold: 1e6,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
 
-  { name: '神秘坑道', minLvl: 0, maxLvl: 0, prior: -1 },
-  { name: '练功房①', minLvl: 0, maxLvl: 0, prior: -1 },
-  { name: '练功房②', minLvl: 0, maxLvl: 0, prior: -1 },
+  {
+    name: '神秘坑道',
+    minLvl: 0,
+    maxLvl: 0,
+    prior: -1,
+    targetHpRecovery: 1e6,
+    targetMpRecovery: 1e6,
+  },
 ];
 export const mapMap = arrayToMap(maps, (v) => v.name);
 //TODO: 长眠之地守护者 1根千年尸骨

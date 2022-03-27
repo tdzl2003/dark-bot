@@ -126,10 +126,6 @@ export interface BotConfig {
    * 是否显示详细AI决策过程
    */
   debug?: boolean;
-  /**
-   * 想要打沙包练到多少级
-   */
-  wishLevel?: number;
 }
 
 export interface AccountConfig {

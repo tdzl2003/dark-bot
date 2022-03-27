@@ -44,7 +44,7 @@ export class Bot {
   mapName: string;
   lastBuyAt = Date.now() + 3600000;
 
-  lastRefreshAt = Date.now();
+  lastRefreshAt = 0;
 
   visitedTasks = new Set<string>();
 
@@ -56,7 +56,7 @@ export class Bot {
   ) {
     this.axios = axios.create({
       baseURL: 'http://119.91.99.233:8088/api',
-      timeout: 10000,
+      timeout: 20000,
     });
     this.axios.interceptors.request.use((req) => {
       if (this.destroyed) {
@@ -108,7 +108,6 @@ export class Bot {
     if (this.player.username !== this.username) {
       throw new Error('用户名不匹配');
     }
-    await this.thinkEquips();
   }
 
   async run() {
@@ -169,7 +168,7 @@ export class Bot {
   async scriptBattle() {
     this.debug('scriptBattle');
 
-    if (this.lastRefreshAt < Date.now() - 60000) {
+    if (this.lastRefreshAt < Date.now() - 300000) {
       this.lastRefreshAt = Date.now();
       await this.refreshEquips();
     }
@@ -195,11 +194,6 @@ export class Bot {
       await this.tryUseGoods();
       if (this.needBuy()) {
         this.debug('needBuy');
-        if (this.mapName) {
-          console.log(`${this.username}: 回城补给`);
-          this.mapName = null;
-          this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
-        }
         return await this.thinkBuy();
       }
     }
@@ -215,9 +209,6 @@ export class Bot {
   }
 
   findBestMap() {
-    if (this.config.wishLevel > this.player.lv) {
-      return Math.random() < 0.5 ? '练功房①' : '练功房②';
-    }
     let choices = maps.filter(
       (v) =>
         v.minLvl <= this.player.lv &&
@@ -267,11 +258,11 @@ export class Bot {
       return this.moveTo(task.npc);
     }
     const data = await this.hey(npc);
-    if (data && data.confirm) {
+    if (data && data.confirm && data.confirm.tid) {
       this.log(`${data.confirm.title}：${data.confirm.content}`);
       await new Promise((resolve) => setTimeout(resolve, 650));
       await this.task(data.confirm.npc, data.confirm.tid);
-      await new Promise((resolve) => setTimeout(resolve, 650));
+      await new Promise((resolve) => setTimeout(resolve, 1200));
       await this.refreshEquips();
     }
     if (task.once) {
@@ -281,10 +272,12 @@ export class Bot {
 
   async refreshEquips() {
     {
+      await new Promise((resolve) => setTimeout(resolve, 650));
       const resp = await this.axios.get('/getEquip');
       this.handleResponse(resp.data.data);
     }
     {
+      await new Promise((resolve) => setTimeout(resolve, 650));
       const resp = await this.axios.get('/getGoods');
       this.handleResponse(resp.data.data);
     }
@@ -318,7 +311,9 @@ export class Bot {
     if (this.player.hp_c < monsterMap.get(target.name).requireHp) {
       throw new Error('低血量保护，停止战斗');
     }
-    this.debug(`attack: ${target.name} ${target.x},${target.y}`);
+    this.debug(
+      `attack: ${target.name} ${target.x},${target.y} curr: ${this.pos.x}, ${this.pos.y}`,
+    );
     this.lastKilled = target.name;
     const hp = this.player.hp_c;
 
@@ -341,7 +336,7 @@ export class Bot {
   ) {
     const dx = monster.x - this.pos.x;
     const dy = monster.y - this.pos.y;
-    if (Math.abs(dx) > range || Math.abs(dy) > range) {
+    if (dx * dx + dy * dy >= (range + 1) * (range + 1)) {
       return false;
     }
     return true;
@@ -521,64 +516,83 @@ export class Bot {
       gold -= prices['62258de568314c57c17abef8'];
     }
 
-    throw new Error('TODO: thinkBuy');
+    const mapData = mapMap.get(this.mapName);
+    this.mapName = null;
+    this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
 
-    // // 剩下的尽可能买到平均
-    // const keys = shop.goods
-    //   .filter((v) => !!v.sellGold)
-    //   .map((v) => v.goodsId)
-    //   .filter((v) => goodsMap.get(v).shouldBuy?.(this));
-    // // 按当前数量从少到多排序
-    // keys.sort((a, b) => (map[a]?.count || 0) - (map[b]?.count || 0));
+    if (!mapData) {
+      return;
+    }
 
-    // let unitPrice = 0;
-    // let buyToCount = 0;
-    // for (const key of keys) {
-    //   const myCount = map[key]?.count || 0;
-    //   let buyCount = myCount - buyToCount;
-    //   if (unitPrice > 0) {
-    //     const maxCount = Math.floor(gold / unitPrice);
-    //     buyCount = Math.min(buyCount, maxCount);
-    //   }
-    //   gold -= unitPrice * buyCount;
-    //   unitPrice += prices[key];
-    //   buyToCount += buyCount;
-    // }
+    // 切换地图
 
-    // {
-    //   const maxCount = Math.floor(gold / unitPrice);
-    //   buyToCount += maxCount;
-    // }
+    let requireHp = Math.ceil(
+      (mapData.targetHpRecovery - this.player.hpRecovery) / 1000,
+    );
+    let requireMp = Math.ceil(
+      (mapData.targetMpRecovery - this.player.mpRecovery) / 1000,
+    );
+    const maxBuyCount = Math.floor(this.player.gold / 3000);
 
-    // for (const key of keys) {
-    //   const myCount = map[key]?.count || 0;
-    //   if (myCount < buyToCount) {
-    //     buyItems.push({
-    //       goodsId: key,
-    //       count: buyToCount - myCount,
-    //     });
-    //   }
-    // }
+    if (requireHp + requireMp > maxBuyCount) {
+      if (requireHp > requireMp) {
+        if (requireHp - requireMp > maxBuyCount) {
+          requireHp = maxBuyCount;
+          requireMp = 0;
+        } else {
+          requireHp -= requireMp;
+          const adds = Math.ceil((maxBuyCount - requireHp) / 2);
+          requireHp += adds;
+          requireMp += adds;
+        }
+      } else {
+        if (requireMp - requireHp > maxBuyCount) {
+          requireHp = 0;
+          requireMp = maxBuyCount;
+        } else {
+          requireMp -= requireHp;
+          const adds = Math.ceil((maxBuyCount - requireMp) / 2);
+          requireHp += adds;
+          requireMp += adds;
+        }
+      }
+    }
 
-    // for (const item of shop.goods) {
-    //   if (!item.sellGold) {
-    //     continue;
-    //   }
-    //   if (!goodsMap.has(item.goodsId)) {
-    //     console.log(
-    //       `${this.username}: 未知的物品：${item.goodsId}, ${item.name}, ${item.mark}`,
-    //     );
-    //   }
-    // }
-    // this.debug('买进物品：' + JSON.stringify(buyItems));
+    if (requireHp > 0) {
+      buyItems.push({
+        goodsId: '62304f75ce3754301855fb75',
+        count: requireHp,
+      });
+    }
 
-    // this.debug(`/buy`);
-    // const resp1 = await this.axios.post('/buy', {
-    //   npc: shop.npc,
-    //   shopId: shop.shopId,
-    //   buyItems,
-    // });
-    // this.handleResponse(resp1.data.data);
+    if (requireMp > 0) {
+      buyItems.push({
+        goodsId: '62304fb4ce3754301855fb7e',
+        count: requireMp,
+      });
+    }
+
+    for (const item of shop.goods) {
+      if (!item.sellGold) {
+        continue;
+      }
+      if (!goodsMap.has(item.goodsId)) {
+        console.log(
+          `${this.username}: 未知的物品：${item.goodsId}, ${item.name}, ${item.mark}`,
+        );
+      }
+    }
+    this.debug('买进物品：' + JSON.stringify(buyItems));
+
+    this.debug(`/buy`);
+    const resp1 = await this.axios.post('/buy', {
+      npc: shop.npc,
+      shopId: shop.shopId,
+      buyItems,
+    });
+    this.handleResponse(resp1.data.data);
+
+    await this.tryUseGoods();
   }
 
   async thinkEquips() {
@@ -658,7 +672,9 @@ export class Bot {
   }
 
   async moveTo(target: { x: number; y: number }) {
-    this.debug(`moveTo ${target.x}, ${target.y}`);
+    this.debug(
+      `moveTo ${target.x}, ${target.y}, current ${this.pos.x}, ${this.pos.y}`,
+    );
 
     const dx = target.x - this.pos.x,
       dy = target.y - this.pos.y;
@@ -855,7 +871,6 @@ export class AppService {
   async load() {
     console.log('刷新配置');
     this.configs = JSON.parse(readFileSync('config.json', 'utf-8'));
-    let dirty = false;
     const set = new Set(this.configs.map((v) => v.username));
     for (const un of this.bots.keys()) {
       if (!set.has(un)) {
@@ -894,9 +909,6 @@ export class AppService {
       }
       this.bots.set(config.username, bot);
       bot.run();
-    }
-    if (dirty) {
-      writeFileSync('config.json', JSON.stringify(this.configs, null, 2));
     }
   }
 }
