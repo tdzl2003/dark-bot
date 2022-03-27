@@ -411,6 +411,11 @@ export const goods: GoodData[] = [
     usableAll: () => true,
   },
   {
+    id: '62304f81ce3754301855fb78',
+    name: '强效金创药',
+    usableAll: () => true,
+  },
+  {
     id: '6230b130ce3754301855fc6f',
     name: '太阳水',
     usableAll: hpPotion(80),
@@ -452,6 +457,10 @@ export const goods: GoodData[] = [
   {
     id: '6224e4219962680c308d3277',
     name: '火球术',
+  },
+  {
+    id: '6230d138ce3754301855fde7',
+    name: '妖狐',
   },
 ];
 
@@ -744,16 +753,16 @@ export const tasks: TaskData[] = [
     condition: (v) => v.hasGood('牛皮', 10),
     npc: npcMap.get('初始大陆-20-20-牛皮狂热者'),
   },
-  // {
-  //   id: '铁矿',
-  //   condition: (v) => v.hasGood('铁矿', 100),
-  //   npc: npcMap.get('初始大陆-26-50-铁矿商人'),
-  // },
-  // {
-  //   id: '铝矿',
-  //   condition: (v) => v.hasGood('铝矿', 100),
-  //   npc: npcMap.get('初始大陆-24-50-铝矿商人'),
-  // },
+  {
+    id: '铁矿',
+    condition: (v) => v.hasGood('铁矿', 100),
+    npc: npcMap.get('初始大陆-26-50-铁矿商人'),
+  },
+  {
+    id: '铝矿',
+    condition: (v) => v.hasGood('铝矿', 100),
+    npc: npcMap.get('初始大陆-24-50-铝矿商人'),
+  },
 ];
 
 export interface MapData {

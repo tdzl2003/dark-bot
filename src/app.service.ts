@@ -332,6 +332,11 @@ export class Bot {
         `警告：${this.username}阵亡，目标：${target.name}，血量：${hp}`,
       );
     }
+    const hpRate = this.player.hp_c / this.player.hp;
+    if (hpRate < 0.5) {
+      // 血量少于50%后，每减少一半多停手1秒
+      await new Promise((resolve) => setTimeout(resolve, -Math.log2(hpRate)));
+    }
   }
 
   isInAttackRange(
