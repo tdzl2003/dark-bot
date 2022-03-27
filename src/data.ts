@@ -426,6 +426,11 @@ export const goods: GoodData[] = [
     usableAll: () => true,
   },
   {
+    id: '62392f47f354f91dd4e2b035',
+    name: '大杯灵石',
+    usableAll: () => true,
+  },
+  {
     id: '6232d7636c521d538ca222bc',
     name: '金条',
     usableAll: () => true,
