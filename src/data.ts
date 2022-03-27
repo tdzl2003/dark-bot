@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Bot } from './app.service';
 import { EquipInfo } from './types';
 
@@ -14,6 +15,7 @@ export interface IoData {
   x: number;
   y: number;
   name: string;
+  requireLevel?: number;
 }
 
 export interface MapEntranceData {
@@ -27,6 +29,7 @@ export interface GoodData {
   id: string;
   name: string;
   usable?: (v: Bot) => boolean;
+  usableAll?: (v: Bot) => boolean;
   junk?: boolean;
 
   shouldBuy?: (v: Bot) => boolean;
@@ -40,12 +43,11 @@ export interface MonsterData {
   type: 'm1' | 'm2' | 'm3' | 'm4' | 'herb';
   maps: string[];
   immutableType?: string;
-  dropGoods?: string[];
-  dropEquips?: string[];
 
   minLv: number;
   maxLv: number;
   notInPath?: boolean; // 是否战斗寻路中一定不打（防止沙包导致移动失败）
+  requireHp?: number;
 }
 
 function arrayToMap<T, K>(a: T[], key: (v: T) => K) {
@@ -66,6 +68,7 @@ export const monsters: MonsterData[] = [
     minLv: 1,
     maxLv: 999,
     notInPath: true,
+    requireHp: 10,
   },
   {
     name: '黑漆漆的树',
@@ -73,7 +76,6 @@ export const monsters: MonsterData[] = [
     lv: 1,
     type: 'herb',
     maps: ['初始大陆'],
-    dropGoods: ['乌木'],
     minLv: 1,
     maxLv: 9,
   },
@@ -92,7 +94,6 @@ export const monsters: MonsterData[] = [
     lv: 1,
     type: 'm1',
     maps: ['初始大陆'],
-    dropGoods: ['小血瓶', '小蓝瓶'],
     minLv: 1,
     maxLv: 6,
   },
@@ -102,7 +103,6 @@ export const monsters: MonsterData[] = [
     lv: 2,
     type: 'm1',
     maps: ['初始大陆'],
-    dropGoods: ['小血瓶', '小蓝瓶', '鸡蛋'],
     minLv: 2,
     maxLv: 7,
   },
@@ -112,7 +112,6 @@ export const monsters: MonsterData[] = [
     lv: 3,
     type: 'm1',
     maps: ['初始大陆'],
-    dropEquips: ['小血瓶', '小蓝瓶', '羊角盔'],
     minLv: 3,
     maxLv: 8,
   },
@@ -122,7 +121,6 @@ export const monsters: MonsterData[] = [
     lv: 5,
     type: 'm1',
     maps: ['初始大陆'],
-    dropEquips: ['小血瓶', '小蓝瓶', '犬齿项链'],
     minLv: 5,
     maxLv: 10,
   },
@@ -132,8 +130,6 @@ export const monsters: MonsterData[] = [
     lv: 8,
     type: 'm1',
     maps: ['初始大陆'],
-    dropGoods: ['小血瓶', '小蓝瓶', '牛皮'],
-    dropEquips: ['牛角戒指'],
     minLv: 8,
     maxLv: 13,
   },
@@ -143,8 +139,6 @@ export const monsters: MonsterData[] = [
     lv: 4,
     type: 'm2',
     maps: ['初始大陆'],
-    dropGoods: ['小血瓶', '小蓝瓶'],
-    dropEquips: ['羊角盔', '丝质短袍'],
     minLv: 4,
     maxLv: 14,
   },
@@ -154,8 +148,6 @@ export const monsters: MonsterData[] = [
     lv: 7,
     type: 'm2',
     maps: ['初始大陆'],
-    dropGoods: ['小血瓶', '小蓝瓶'],
-    dropEquips: ['羊角盔', '丝质短袍', '犬齿项链', '青铜剑'],
     minLv: 7,
     maxLv: 17,
   },
@@ -165,8 +157,6 @@ export const monsters: MonsterData[] = [
     lv: 10,
     type: 'm3',
     maps: ['初始大陆'],
-    dropGoods: ['中血瓶', '中蓝瓶'],
-    dropEquips: ['妖狐之眼', '狐皮靴'],
     minLv: 10,
     maxLv: 999,
   },
@@ -177,7 +167,6 @@ export const monsters: MonsterData[] = [
     lv: 1,
     type: 'herb',
     maps: ['东部矿坑', '矿坑东', '矿坑北'],
-    dropGoods: ['铝矿'],
     minLv: 1,
     maxLv: 999,
   },
@@ -187,7 +176,6 @@ export const monsters: MonsterData[] = [
     lv: 1,
     type: 'herb',
     maps: ['东部矿坑', '矿坑东', '矿坑北'],
-    dropGoods: ['铁矿'],
     minLv: 1,
     maxLv: 999,
   },
@@ -198,8 +186,6 @@ export const monsters: MonsterData[] = [
     lv: 10,
     type: 'm1',
     maps: ['东部矿坑'],
-    dropGoods: ['中血瓶', '中蓝瓶'],
-    dropEquips: ['铁腰带'],
     minLv: 10,
     maxLv: 15,
   },
@@ -209,8 +195,6 @@ export const monsters: MonsterData[] = [
     lv: 10,
     type: 'm1',
     maps: ['东部矿坑'],
-    dropGoods: ['中血瓶', '中蓝瓶'],
-    dropEquips: ['皮手套'],
     minLv: 10,
     maxLv: 15,
   },
@@ -220,8 +204,6 @@ export const monsters: MonsterData[] = [
     lv: 10,
     type: 'm2',
     maps: ['东部矿坑'],
-    dropGoods: ['小血瓶', '小蓝瓶', '中血瓶', '中蓝瓶'],
-    dropEquips: ['蛇眼戒指', '法力手环'],
     minLv: 10,
     maxLv: 20,
   },
@@ -233,8 +215,6 @@ export const monsters: MonsterData[] = [
     maps: ['东部矿坑', '矿坑北'],
     minLv: 14,
     maxLv: 24,
-    dropGoods: ['小蓝瓶', '中血瓶', '中蓝瓶'],
-    dropEquips: ['玛瑙法杖', '法师长袍'],
   },
 
   {
@@ -245,8 +225,6 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 11,
     maxLv: 16,
-    dropGoods: ['中血瓶', '中蓝瓶'],
-    dropEquips: ['法师之拳'],
   },
   {
     name: '蝎子',
@@ -256,8 +234,6 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     minLv: 12,
     maxLv: 17,
-    dropGoods: ['中血瓶', '中蓝瓶'],
-    dropEquips: ['铁意头盔'],
   },
   {
     name: '幽魂',
@@ -268,8 +244,6 @@ export const monsters: MonsterData[] = [
     minLv: 13,
     maxLv: 18,
     immutableType: 'melee',
-    dropGoods: ['中血瓶', '中蓝瓶'],
-    dropEquips: ['铁意头盔', '力量手镯'],
   },
   {
     name: '大岩蛇',
@@ -290,8 +264,6 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑北'],
     minLv: 15,
     maxLv: 20,
-    dropGoods: ['中血瓶'],
-    dropEquips: ['信条面巾', '重盔甲'],
   },
 
   {
@@ -433,41 +405,36 @@ function hpPotion(val) {
   };
 }
 
-function mpPotion(val) {
-  return (bot: Bot) => {
-    return bot.player.mp - bot.player.mp_c >= val;
-  };
-}
-
 export const goods: GoodData[] = [
-  {
-    id: '621f14fbae6d464b808814ab',
-    name: '小血瓶',
-    usable: hpPotion(20),
-    shouldBuy: () => true,
-  },
-  {
-    id: '62237ad3123d27297c06b54b',
-    name: '小蓝瓶',
-    usable: mpPotion(20),
-    shouldBuy: () => true,
-  },
   {
     id: '622572c968314c57c17abe8f',
     name: '鸡蛋',
     usable: hpPotion(40),
   },
   {
-    id: '6225ce7a68314c57c17ac01b',
-    name: '中血瓶',
-    usable: hpPotion(50),
-    shouldBuy: (v) => v.player.lv >= 15,
+    id: '62304f75ce3754301855fb75',
+    name: '金创药',
+    usableAll: () => true,
   },
   {
-    id: '6225ce8568314c57c17ac01e',
-    name: '中蓝瓶',
-    usable: mpPotion(50),
-    shouldBuy: (v) => v.player.lv >= 15,
+    id: '62304fb4ce3754301855fb7e',
+    name: '魔法药',
+    usableAll: () => true,
+  },
+  {
+    id: '6230b130ce3754301855fc6f',
+    name: '太阳水',
+    usableAll: hpPotion(80),
+  },
+  {
+    id: '62392f4ef354f91dd4e2b038',
+    name: '中杯灵石',
+    usableAll: () => true,
+  },
+  {
+    id: '6232d7636c521d538ca222bc',
+    name: '金条',
+    usableAll: () => true,
   },
   {
     id: '62258de568314c57c17abef8',
@@ -523,6 +490,48 @@ export const npc: NpcData[] = [
     y: 20,
   },
   {
+    name: '新手村长',
+    map: '初始大陆',
+    x: 3,
+    y: 5,
+  },
+  {
+    name: '黑猫警长',
+    map: '初始大陆',
+    x: 7,
+    y: 2,
+  },
+  {
+    name: '村民',
+    map: '初始大陆',
+    x: 7,
+    y: 5,
+  },
+  {
+    name: '村民',
+    map: '初始大陆',
+    x: 7,
+    y: 6,
+  },
+  {
+    name: '村民',
+    map: '初始大陆',
+    x: 8,
+    y: 5,
+  },
+  {
+    name: '老奶奶',
+    map: '初始大陆',
+    x: 10,
+    y: 2,
+  },
+  {
+    name: '村民',
+    map: '初始大陆',
+    x: 8,
+    y: 6,
+  },
+  {
     name: '铝矿商人',
     map: '初始大陆',
     x: 24,
@@ -533,18 +542,6 @@ export const npc: NpcData[] = [
     map: '初始大陆',
     x: 26,
     y: 50,
-  },
-  {
-    name: '神秘人',
-    map: '神秘坑道',
-    x: 0,
-    y: 0,
-  },
-  {
-    name: '长眠之地守护者',
-    map: '矿坑深处',
-    x: 10,
-    y: 10,
   },
 ];
 export const npcMap = arrayToMap(npc, (v) =>
@@ -586,6 +583,7 @@ export const io: IoData[] = [
     x: 50,
     y: 50,
     toMap: '封魔谷',
+    requireLevel: 20,
   },
 
   {
@@ -761,15 +759,21 @@ export const PreferAttrConfigs1 = {
 
 export interface TaskData {
   id: string;
-  condition: (b: Bot) => boolean;
+  condition?: (b: Bot) => boolean;
   npc: NpcData;
+  once?: boolean;
 }
 
 export const tasks: TaskData[] = [
   {
     id: '新手任务',
-    condition: (v) => v.equipList.length === 0,
     npc: npcMap.get('初始大陆-3-3-新手接待员'),
+    once: true,
+  },
+  {
+    id: '新手任务2',
+    npc: npcMap.get('初始大陆-3-5-新手村长'),
+    once: true,
   },
   {
     id: '乌木剑',
@@ -781,38 +785,62 @@ export const tasks: TaskData[] = [
     condition: (v) => v.hasGood('牛皮', 10),
     npc: npcMap.get('初始大陆-20-20-牛皮狂热者'),
   },
-  {
-    id: '铁矿',
-    condition: (v) => v.hasGood('铁矿', 100),
-    npc: npcMap.get('初始大陆-26-50-铁矿商人'),
-  },
-  {
-    id: '铝矿',
-    condition: (v) => v.hasGood('铝矿', 100),
-    npc: npcMap.get('初始大陆-24-50-铝矿商人'),
-  },
+  // {
+  //   id: '铁矿',
+  //   condition: (v) => v.hasGood('铁矿', 100),
+  //   npc: npcMap.get('初始大陆-26-50-铁矿商人'),
+  // },
+  // {
+  //   id: '铝矿',
+  //   condition: (v) => v.hasGood('铝矿', 100),
+  //   npc: npcMap.get('初始大陆-24-50-铝矿商人'),
+  // },
 ];
 
 export interface MapData {
   name: string;
   minLvl: number;
   maxLvl: number;
-  earnMoney: number;
+  requireGold?: number;
+  requireHpRecovery?: number; // 低于这个值就回城了。
+  requireMpRecovery?: number; // 低于这个值就回城了。
+  targetHpRecovery?: number; // 买到这个值
+  targetMpRecovery?: number; // 买到这个值
+  prior: number; // 0: 打钱；1: 打装备；2:打boss
 }
 
-export const maps = [
-  { name: '初始大陆', minLvl: 1, maxLvl: 9 },
-  { name: '东部矿坑', minLvl: 10, maxLvl: 10, earnMoney: true },
-  { name: '矿坑东', minLvl: 11, maxLvl: 24, earnMoney: true },
-  { name: '矿坑北', minLvl: 14, maxLvl: 18, earnMoney: true },
-  { name: '矿坑深处', minLvl: 18, maxLvl: 28 },
-  { name: '血色森林', minLvl: 15, maxLvl: 25 },
-  { name: '守护者大殿', minLvl: 20, maxLvl: 30 },
-  { name: '封魔谷', minLvl: 20, maxLvl: 99 },
+export const maps: MapData[] = [
+  {
+    name: '初始大陆',
+    minLvl: 1,
+    maxLvl: 99,
+    prior: 0,
+    requireHpRecovery: 1,
+    requireMpRecovery: 1,
+    targetHpRecovery: 10000,
+    targetMpRecovery: 10000,
+  },
+  {
+    name: '东部矿坑',
+    minLvl: 10,
+    maxLvl: 99,
+    prior: 0,
+    requireGold: 1e4,
+    requireHpRecovery: 1000,
+    requireMpRecovery: 1000,
+    targetHpRecovery: 100000,
+    targetMpRecovery: 100000,
+  },
+  { name: '矿坑东', minLvl: 11, maxLvl: 24, prior: 1, requireGold: 1e6 },
+  { name: '矿坑北', minLvl: 14, maxLvl: 18, prior: 1, requireGold: 1e6 },
+  { name: '矿坑深处', minLvl: 18, maxLvl: 28, prior: 1, requireGold: 1e7 },
+  { name: '血色森林', minLvl: 15, maxLvl: 25, prior: 1, requireGold: 1e6 },
+  { name: '守护者大殿', minLvl: 20, maxLvl: 30, prior: 1, requireGold: 1e7 },
+  { name: '封魔谷', minLvl: 20, maxLvl: 99, prior: 1, requireGold: 1e6 },
 
-  { name: '神秘坑道', minLvl: 0, maxLvl: 0 },
-  { name: '练功房①', minLvl: 0, maxLvl: 0 },
-  { name: '练功房②', minLvl: 0, maxLvl: 0 },
+  { name: '神秘坑道', minLvl: 0, maxLvl: 0, prior: -1 },
+  { name: '练功房①', minLvl: 0, maxLvl: 0, prior: -1 },
+  { name: '练功房②', minLvl: 0, maxLvl: 0, prior: -1 },
 ];
-
+export const mapMap = arrayToMap(maps, (v) => v.name);
 //TODO: 长眠之地守护者 1根千年尸骨

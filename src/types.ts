@@ -35,6 +35,11 @@ export interface PlayerInfo extends Attrs {
   hp_c: number;
   mp_c: number;
 
+  hpRecovery: number;
+  hpSec: number;
+  mpRecovery: number;
+  mpSec: number;
+
   damage: number;
 }
 
@@ -98,7 +103,7 @@ export interface SkillInfo {
 
 export interface BotConfig {
   /**
-   * 选择任务。IDLE: 什么也不做。scriptHome：回城。scriptBattle：自动战斗升级
+   * 选择任务。IDLE: 什么也不做。scriptHome：回城。scriptBattle：自动战斗打怪。
    */
   script: 'idle' | 'scriptHome' | 'scriptBattle';
   /**
@@ -109,14 +114,6 @@ export interface BotConfig {
    * 可选：指定地图。不然按等级自动选择地图
    */
   mapName?: string;
-  /**
-   * 智能买药最少数量，低于此数量会回城。初始建议设置成10，后面建议设置成100
-   */
-  minBuyCount?: number;
-  /**
-   * 智能买药最大上限，推荐设置成2000
-   */
-  maxBuyCount?: number;
   /**
    * 装备策略，物理或魔法
    */
@@ -133,11 +130,6 @@ export interface BotConfig {
    * 想要打沙包练到多少级
    */
   wishLevel?: number;
-
-  /**
-   * 要存多少钱。钱比这个少就不打沙包和BOSS了，出门打工。而且会主动选择矿区图
-   */
-  wishGold?: number;
 }
 
 export interface AccountConfig {
