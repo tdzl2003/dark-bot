@@ -60,6 +60,15 @@ function arrayToMap<T, K>(a: T[], key: (v: T) => K) {
 
 export const monsters: MonsterData[] = [
   {
+    name: '沙包',
+    hp: 99999,
+    lv: 999,
+    type: 'm4',
+    maps: ['初始大陆'],
+    minLv: 0,
+    maxLv: 0,
+  },
+  {
     name: '黑漆漆的树',
     hp: 1,
     lv: 1,

@@ -897,7 +897,9 @@ export class AppService {
       if (!timer) {
         timer = setTimeout(() => {
           timer = null;
-          this.lastLoadPromise = this.load();
+          this.lastLoadPromise = Promise.resolve(this.lastLoadPromise).then(
+            () => this.load(),
+          );
         }, 1000);
       }
     });
