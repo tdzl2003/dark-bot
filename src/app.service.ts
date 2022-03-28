@@ -564,7 +564,7 @@ export class Bot {
     let requireMp = Math.ceil(
       (mapData.targetMpRecovery - this.player.mpRecovery) / 1000,
     );
-    const maxBuyCount = Math.floor(this.player.gold / 3000);
+    const maxBuyCount = Math.floor((this.player.gold - 10000) / 3000);
 
     if (requireHp + requireMp > maxBuyCount) {
       if (requireHp > requireMp) {
