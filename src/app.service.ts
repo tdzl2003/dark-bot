@@ -172,8 +172,8 @@ export class Bot {
   async scriptBattle() {
     this.debug('scriptBattle');
 
-    if (this.lastRefreshAt < Date.now() - 300000) {
-      this.lastRefreshAt = Date.now();
+    if (this.lastRefreshAt < Date.now()) {
+      this.lastRefreshAt = Date.now() + Math.random() * 300000 + 60000;
       await this.refreshEquips();
     }
 
@@ -551,7 +551,7 @@ export class Bot {
 
     const mapData = mapMap.get(this.mapName);
     this.mapName = null;
-    this.lastBuyAt = Date.now() + Math.random() * 1800000 + 1800000;
+    this.lastBuyAt = Date.now() + Math.random() * 7200000 + 1800000;
 
     if (!mapData) {
       return;
