@@ -765,6 +765,7 @@ export const tasks: TaskData[] = [
     id: '妖狐',
     condition: (v) => v.hasGood('妖狐', 1),
     npc: npcMap.get('初始大陆-10-2-老奶奶'),
+    once: true,
   },
   {
     id: '乌木剑',
