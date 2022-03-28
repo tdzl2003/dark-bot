@@ -779,12 +779,12 @@ export const tasks: TaskData[] = [
   },
   {
     id: '铁矿',
-    condition: (v) => v.hasGood('铁矿', 1000),
+    condition: (v) => v.hasGood('铁矿', 500),
     npc: npcMap.get('初始大陆-26-50-铁矿商人'),
   },
   {
     id: '铝矿',
-    condition: (v) => v.hasGood('铝矿', 1000),
+    condition: (v) => v.hasGood('铝矿', 500),
     npc: npcMap.get('初始大陆-24-50-铝矿商人'),
   },
 ];
