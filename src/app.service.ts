@@ -71,6 +71,7 @@ export class Bot {
     });
     this.axios.interceptors.response.use((resp) => {
       if (resp.data.status < 0 || resp.data.status === 500) {
+        this.log(`${resp.request.path} ${JSON.stringify(resp.data)}`);
         throw new Error('错误码' + resp.data.status);
       }
       this.debug(`${JSON.stringify(resp.data)}`);
@@ -182,7 +183,9 @@ export class Bot {
       return;
     }
 
-    await this.fbLvUp();
+    if (this.config.fbUpgrade) {
+      await this.fbLvUp();
+    }
 
     // 选择刷怪地图
     if (!this.mapName) {
@@ -214,7 +217,7 @@ export class Bot {
   async fbLvUp() {
     if (!this.fb.readyLvUp) {
       const maxExp = Math.pow(1 + this.fb.quality, 2) * 100;
-      if (this.fb.exp < maxExp || this.fb.lv >= 9) {
+      if (this.fb.exp < maxExp || this.fb.lv >= 10) {
         return;
       }
       this.log('法宝升级');

@@ -134,6 +134,10 @@ export interface BotConfig {
    * 是否显示详细AI决策过程
    */
   debug?: boolean;
+  /**
+   *
+   */
+  fbUpgrade?: boolean;
 }
 
 export interface AccountConfig {

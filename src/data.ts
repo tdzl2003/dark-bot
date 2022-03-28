@@ -240,7 +240,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['矿坑东'],
     minLv: 13,
-    maxLv: 18,
+    maxLv: 23,
     immutableType: 'melee',
   },
   {
