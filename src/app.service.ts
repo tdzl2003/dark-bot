@@ -114,23 +114,24 @@ export class Bot {
   }
 
   async run() {
-    try {
-      while (!this.destroyed) {
-        this.debug('step');
-        await this.think();
-        // await new Promise((resolve) => setTimeout(resolve, 500));
-      }
-      this.log('退出');
-    } catch (e) {
-      console.error(this.username, e.stack);
-      // 干掉所有进程，确保我能看到错误
-      if (!axios.isAxiosError(e)) {
-        for (const [k, v] of this.service.bots.entries()) {
-          v.destroyed = true;
+    while (!this.destroyed) {
+      try {
+        while (!this.destroyed) {
+          this.debug('step');
+          await this.think();
+          // await new Promise((resolve) => setTimeout(resolve, 500));
         }
-        this.service.bots.clear();
-      } else {
-        this.service.bots.delete(this.username);
+        this.log('退出');
+      } catch (e) {
+        console.error(this.username, e.stack);
+        // 干掉所有进程，确保我能看到错误
+        if (!axios.isAxiosError(e)) {
+          for (const [k, v] of this.service.bots.entries()) {
+            v.destroyed = true;
+          }
+          this.service.bots.clear();
+          return;
+        }
       }
     }
   }
