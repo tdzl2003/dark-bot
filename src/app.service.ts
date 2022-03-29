@@ -241,7 +241,7 @@ export class Bot {
     );
     const maxPrior = choices
       .map((v) => v.prior)
-      .reduce((a, b) => Math.min(a, b), Infinity);
+      .reduce((a, b) => Math.max(a, b), -Infinity);
     choices = choices.filter((v) => v.prior === maxPrior);
     if (choices.length === 0) {
       throw new Error('没有可去的地图！');
