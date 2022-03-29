@@ -138,6 +138,10 @@ export interface BotConfig {
    *
    */
   fbUpgrade?: boolean;
+  /**
+   *
+   */
+  herb?: boolean;
 }
 
 export interface AccountConfig {

@@ -761,6 +761,9 @@ export class Bot {
       ) {
         continue;
       }
+      if (v.type === 'herb' && !this.config.herb) {
+        continue;
+      }
       const data = monsterMap.get(v.name);
       if (isFindPath && data.notInPath) {
         continue;

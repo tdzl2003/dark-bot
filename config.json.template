@@ -9,7 +9,8 @@
       "mapName": undefined,
       "script": "scriptBattle",
       "skillId": "621ba739e0f78648a8c27d70",
-      "preferAttr": "melee"
+      "preferAttr": "melee",
+      "herb": true
     }
   },
 ]
