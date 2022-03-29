@@ -555,6 +555,12 @@ export const npc: NpcData[] = [
     x: 26,
     y: 50,
   },
+  {
+    name: '血色叛徒',
+    map: '血色森林',
+    x: 15,
+    y: 15,
+  },
 ];
 export const npcMap = arrayToMap(npc, (v) =>
   [v.map, v.x, v.y, v.name].join('-'),

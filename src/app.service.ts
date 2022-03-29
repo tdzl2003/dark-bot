@@ -551,7 +551,7 @@ export class Bot {
 
     const mapData = mapMap.get(this.mapName);
     this.mapName = null;
-    this.lastBuyAt = Date.now() + Math.random() * 7200000 + 1800000;
+    this.lastBuyAt = Date.now() + Math.random() * 3600000 + 1800000;
 
     if (!mapData) {
       return;
