@@ -84,7 +84,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['初始大陆'],
     minLv: 1,
-    maxLv: 6,
+    maxLv: 4,
   },
   {
     name: '蜜蜂',
@@ -93,7 +93,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['初始大陆'],
     minLv: 1,
-    maxLv: 6,
+    maxLv: 4,
   },
   {
     name: '野鸡',
@@ -102,7 +102,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['初始大陆'],
     minLv: 2,
-    maxLv: 7,
+    maxLv: 5,
   },
   {
     name: '山羊',
@@ -111,7 +111,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['初始大陆'],
     minLv: 3,
-    maxLv: 8,
+    maxLv: 6,
   },
   {
     name: '野狗',
@@ -120,7 +120,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['初始大陆'],
     minLv: 5,
-    maxLv: 10,
+    maxLv: 8,
   },
   {
     name: '旋角牛',
@@ -129,7 +129,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['初始大陆'],
     minLv: 8,
-    maxLv: 13,
+    maxLv: 11,
   },
   {
     name: '燕尾蝶',
@@ -138,7 +138,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['初始大陆'],
     minLv: 4,
-    maxLv: 14,
+    maxLv: 10,
   },
   {
     name: '鬣狗',
@@ -147,7 +147,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['初始大陆'],
     minLv: 7,
-    maxLv: 17,
+    maxLv: 13,
   },
   {
     name: '妖狐',
@@ -185,7 +185,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['东部矿坑'],
     minLv: 10,
-    maxLv: 15,
+    maxLv: 13,
   },
   {
     name: '蝙蝠',
@@ -194,7 +194,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['东部矿坑'],
     minLv: 10,
-    maxLv: 15,
+    maxLv: 13,
   },
   {
     name: '绿毛僵尸',
@@ -203,7 +203,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['东部矿坑'],
     minLv: 10,
-    maxLv: 20,
+    maxLv: 16,
   },
   {
     name: '僵法尸',
@@ -212,7 +212,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['东部矿坑', '矿坑北'],
     minLv: 14,
-    maxLv: 24,
+    maxLv: 20,
   },
 
   {
@@ -222,7 +222,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['矿坑东'],
     minLv: 11,
-    maxLv: 16,
+    maxLv: 14,
   },
   {
     name: '蝎子',
@@ -231,7 +231,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['矿坑东'],
     minLv: 12,
-    maxLv: 17,
+    maxLv: 15,
   },
   {
     name: '幽魂',
@@ -240,7 +240,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['矿坑东'],
     minLv: 13,
-    maxLv: 23,
+    maxLv: 19,
     immutableType: 'melee',
   },
   {
@@ -251,7 +251,7 @@ export const monsters: MonsterData[] = [
     maps: ['矿坑东'],
     immutableType: 'magic',
     minLv: 16,
-    maxLv: 26,
+    maxLv: 22,
   },
 
   {
@@ -261,7 +261,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['矿坑北'],
     minLv: 15,
-    maxLv: 20,
+    maxLv: 18,
   },
 
   {
@@ -271,7 +271,7 @@ export const monsters: MonsterData[] = [
     type: 'm3',
     maps: ['矿坑深处'],
     minLv: 18,
-    maxLv: 99,
+    maxLv: 999,
   },
 
   {
@@ -281,7 +281,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['血色森林'],
     minLv: 15,
-    maxLv: 20,
+    maxLv: 18,
   },
   {
     name: '血色狂热者',
@@ -290,7 +290,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['血色森林'],
     minLv: 17,
-    maxLv: 27,
+    maxLv: 23,
   },
   {
     name: '血色主教',
@@ -319,7 +319,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['封魔谷'],
     minLv: 20,
-    maxLv: 25,
+    maxLv: 23,
   },
   {
     name: '半兽人',
@@ -328,7 +328,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['封魔谷'],
     minLv: 21,
-    maxLv: 26,
+    maxLv: 24,
   },
   {
     name: '骷髅战士',
@@ -337,7 +337,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['封魔谷'],
     minLv: 22,
-    maxLv: 27,
+    maxLv: 25,
   },
   {
     name: '骷髅法师',
@@ -346,7 +346,7 @@ export const monsters: MonsterData[] = [
     type: 'm1',
     maps: ['封魔谷'],
     minLv: 23,
-    maxLv: 28,
+    maxLv: 26,
   },
   {
     name: '骷髅精灵',
@@ -355,7 +355,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['封魔谷'],
     minLv: 25,
-    maxLv: 35,
+    maxLv: 31,
   },
   {
     name: '半兽人勇士',
@@ -364,7 +364,7 @@ export const monsters: MonsterData[] = [
     type: 'm2',
     maps: ['封魔谷'],
     minLv: 26,
-    maxLv: 36,
+    maxLv: 32,
   },
   {
     name: '半兽人统领',
@@ -373,7 +373,7 @@ export const monsters: MonsterData[] = [
     type: 'm3',
     maps: ['封魔谷'],
     minLv: 27,
-    maxLv: 99,
+    maxLv: 999,
   },
   {
     name: '半人马战行者',
@@ -382,7 +382,7 @@ export const monsters: MonsterData[] = [
     type: 'm3',
     maps: ['封魔谷'],
     minLv: 28,
-    maxLv: 99,
+    maxLv: 999,
   },
 
   {
@@ -391,8 +391,8 @@ export const monsters: MonsterData[] = [
     lv: 9999,
     type: 'm4',
     maps: ['初始大陆'],
-    minLv: 99,
-    maxLv: 99,
+    minLv: 30,
+    maxLv: 999,
   },
 ];
 export const monsterMap = arrayToMap(monsters, (v) => v.name);
@@ -826,7 +826,7 @@ export const maps: MapData[] = [
   {
     name: '矿坑东',
     minLvl: 11,
-    maxLvl: 24,
+    maxLvl: 22,
     prior: 1,
     requireGold: 1e6,
     targetHpRecovery: 1e6,
@@ -835,7 +835,7 @@ export const maps: MapData[] = [
   {
     name: '矿坑北',
     minLvl: 14,
-    maxLvl: 18,
+    maxLvl: 20,
     prior: 1,
     requireGold: 1e6,
     targetHpRecovery: 1e6,
@@ -844,7 +844,7 @@ export const maps: MapData[] = [
   {
     name: '矿坑深处',
     minLvl: 18,
-    maxLvl: 28,
+    maxLvl: 30,
     prior: 1,
     requireGold: 1e7,
     targetHpRecovery: 1e6,
@@ -853,7 +853,7 @@ export const maps: MapData[] = [
   {
     name: '血色森林',
     minLvl: 15,
-    maxLvl: 25,
+    maxLvl: 23,
     prior: 1,
     requireGold: 1e6,
     targetHpRecovery: 1e6,
@@ -871,7 +871,7 @@ export const maps: MapData[] = [
   {
     name: '封魔谷',
     minLvl: 20,
-    maxLvl: 99,
+    maxLvl: 32,
     prior: 1,
     requireGold: 1e6,
     targetHpRecovery: 1e6,
