@@ -636,6 +636,13 @@ export const io: IoData[] = [
   {
     name: '矿坑深处',
     map: '矿坑北',
+    x: 10,
+    y: 0,
+    toMap: '矿坑深处',
+  },
+  {
+    name: '矿坑深处',
+    map: '矿坑北',
     x: 0,
     y: 10,
     toMap: '矿坑深处',
